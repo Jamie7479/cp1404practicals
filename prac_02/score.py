@@ -3,9 +3,15 @@ CP1404/CP5632 - Practical
 Program to determine score status
 """
 
+from random import randint
+
+
 def main():
-    score = float(input("Enter score: "))
-    print(determine_grade(score))
+    user_score = float(input("Enter score: "))
+    print(determine_grade(user_score))
+    random_score = randint(0, 100)
+    print(f"Random score: {random_score}")
+    print(determine_grade(random_score))
 
 
 def determine_grade(score):
