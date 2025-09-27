@@ -1,4 +1,4 @@
-"""Gets score (0-100) and can print score result, display as many asterisks as the score"""
+"""Get score (0-100) and can print score result, display as many asterisks as the score"""
 
 MENU = """(G)et a valid score
 (P)rint result
