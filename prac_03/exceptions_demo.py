@@ -30,6 +30,6 @@ def getNonZeroDenominator():
 
 main()
 
-# 1. A ValueError will occur when a non-integer value is inputted, such as a float, or extra characters or spaces.
+# 1. A ValueError will occur when a non-integer value is inputted, such as a float, or extra characters.
 # 2. ZeroDivisionError will occur if the denominator input is 0
 # 3. Check input first to ensure it isnt a 0
