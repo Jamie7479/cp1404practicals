@@ -1,3 +1,8 @@
+"""
+CP1404 - Prac 3
+Quick Picks
+"""
+
 import random
 
 MIN = 1
