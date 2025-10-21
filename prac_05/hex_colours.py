@@ -8,10 +8,10 @@ NAME_TO_HEX = {"Alizarin Crimson": "#e32636", "Amber": "#ffbf00", "Amethyst": "#
 
 print(NAME_TO_HEX)
 
-name = input("Enter colour name: ").title()
+name = input("Enter colour name: ").title().strip()
 while name != "":
     try:
         print(f"{name} is {NAME_TO_HEX[name]}")
     except KeyError:
         print("Invalid colour name")
-    name = input("Enter colour name: ").title()
+    name = input("Enter colour name: ").title().strip()
