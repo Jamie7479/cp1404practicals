@@ -11,7 +11,7 @@ print(NAME_TO_HEX)
 name = input("Enter colour name: ").lower()
 while name != "":
     try:
-        print(name, "is", NAME_TO_HEX[name])
+        print(f"{name} is {NAME_TO_HEX[name]}")
     except KeyError:
         print("Invalid colour name")
     name = input("Enter colour name: ").lower()
