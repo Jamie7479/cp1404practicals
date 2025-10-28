@@ -8,7 +8,7 @@ Duration: 8mins
 
 
 class ProgrammingLanguage:
-    """Create programming language instance"""
+    """Represent Programming Language instance"""
 
     def __init__(self, name, typing, reflection, year):
         """Initialise programming language instance"""
