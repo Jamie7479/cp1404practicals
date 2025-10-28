@@ -1,9 +1,8 @@
 """
 Guitar Class
-Estimated time: 2mins
+Estimated time: 5mins
 Start time: 1.00
-End time:
-Duration: 10mins
+Duration: 5mins
 """
 from guitar import Guitar
 
