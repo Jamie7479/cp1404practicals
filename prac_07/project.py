@@ -12,3 +12,6 @@ class Project:
         self.priority = priority
         self.cost_estimate = cost_estimate
         self.completion_percentage = completion_percentage
+
+    def __repr__(self):
+        return str(vars(self))
