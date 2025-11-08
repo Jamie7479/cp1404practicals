@@ -3,6 +3,7 @@ Project Management
 Estimated Time: 35mins
 Real Time:
 """
+from yt_dlp.utils import process_communicate_or_kill
 
 DEFAULT_FILENAME = "projects.txt"
 MENU = """- (L)oad projects
@@ -24,6 +25,7 @@ def main():
     for project in projects:  # testing output
         print(project)
 
+    print(MENU)
     choice = input(">>>").upper()
     while choice != "Q":
         if choice == "L":
@@ -33,7 +35,7 @@ def main():
             filename = input("Filename: ")
             save_projects(projects, filename)
         elif choice == "D":
-            pass
+            display_projects(sorted(projects))
         elif choice == "F":
             pass
         elif choice == "A":
@@ -42,6 +44,7 @@ def main():
             pass
         else:
             print("Invalid input")
+        print(MENU)
         choice = input(">>>").upper()
 
 
@@ -64,6 +67,7 @@ def load_projects(filename):
     print(f"Loaded {len(projects)} projects from {filename}")
     return projects
 
+
 def save_projects(projects, filename):
     with open(filename, "w") as out_file:
         for project in projects:
@@ -73,5 +77,17 @@ def save_projects(projects, filename):
                   f"\t{project.cost_estimate}\t{project.completion_percentage}", file=out_file)
 
 
+def display_projects(projects):
+    incomplete_projects = [project for project in projects if not project.is_complete()]
+    completed_projects = [project for project in projects if project.is_complete()]
+    print("Incomplete projects:")
+    for project in incomplete_projects:
+        start_date_string = project.start_date.strftime('%d/%m/%Y')
+        print(f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+
+    print("Completed projects:")
+    for project in completed_projects:
+        start_date_string = project.start_date.strftime('%d/%m/%Y')
+        print(f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
 
 main()

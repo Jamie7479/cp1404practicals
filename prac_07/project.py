@@ -16,3 +16,8 @@ class Project:
     def __repr__(self):
         return str(vars(self))
 
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+    def is_complete(self):
+        return self.completion_percentage == 100
