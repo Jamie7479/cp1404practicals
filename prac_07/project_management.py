@@ -3,7 +3,6 @@ Project Management
 Estimated Time: 35mins
 Real Time:
 """
-from yt_dlp.utils import process_communicate_or_kill
 
 DEFAULT_FILENAME = "projects.txt"
 MENU = """- (L)oad projects
@@ -19,6 +18,7 @@ from project import Project
 
 
 def main():
+    """Manage and display projects"""
     print("Welcome to Project Manager")
     projects = load_projects(DEFAULT_FILENAME)
     # for project in projects:  # testing output
@@ -38,7 +38,7 @@ def main():
         elif choice == "F":
             date = get_valid_date("Show projects that start after date (d/m/yyyy): ")
             # print(date)
-            display_projects_after_date(projects, date)
+            display_projects_on_or_after_date(projects, date)
         elif choice == "A":
             projects.append(get_new_project())
         elif choice == "U":
@@ -47,6 +47,9 @@ def main():
             print("Invalid input")
         print(MENU)
         choice = input(">>> ").upper()
+    if input(f"Would you like to save to {DEFAULT_FILENAME}? (y/n) ").upper() == "Y":
+        save_projects(projects, DEFAULT_FILENAME)
+    print("Thank you for using custom-built project management software.")
 
 
 def load_projects(filename):
@@ -70,6 +73,7 @@ def load_projects(filename):
 
 
 def save_projects(projects, filename):
+    """Save projects to file"""
     with open(filename, "w") as out_file:
         for project in projects:
             # print(project)
@@ -79,22 +83,22 @@ def save_projects(projects, filename):
 
 
 def display_projects(projects):
+    """Display projects"""
     incomplete_projects = [project for project in sorted(projects) if not project.is_complete()]
     print("Incomplete projects:")
     completed_projects = [project for project in sorted(projects) if project.is_complete()]
     for project in incomplete_projects:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(
-            f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(f"\t{project}")
 
     print("Completed projects:")
     for project in completed_projects:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(
-            f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(f"\t{project}")
 
 
 def get_valid_date(prompt):
+    """Get valid date"""
     while True:
         try:
             date_string = input(prompt)
@@ -104,14 +108,15 @@ def get_valid_date(prompt):
             print("Invalid date format")
 
 
-def display_projects_after_date(projects, date):
+def display_projects_on_or_after_date(projects, date):
+    """Display all projects on or after date"""
     for project in [project for project in sorted(projects) if project.is_on_or_after(date)]:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(
-            f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(f"\t{project}")
 
 
 def get_valid_number(prompt):
+    """Get valid date"""
     while True:
         try:
             number = int(input(prompt))
@@ -122,26 +127,29 @@ def get_valid_number(prompt):
 
 
 def get_new_project():
+    """Get new project object"""
     print("Let's add a new project")
     name = input("Name: ")
     start_date = get_valid_date("Start date (dd/mm/yyyy): ")
     priority = get_valid_number("Priority: ")
     cost_estimate = get_valid_number("Cost estimate: $")
     completion_percentage = get_valid_number("Percent complete: ")
-    return Project(name,start_date,priority,cost_estimate,completion_percentage)
+    return Project(name, start_date, priority, cost_estimate, completion_percentage)
 
 
 def update_project(projects):
+    """Choose object and update completion and priority"""
     for i, project in enumerate(projects):
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(f"{i} {project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(
+            f"{i} {project}%")
     choice = get_valid_number("Project choice: ")
-    while choice > len(projects)-1:
+    while choice > len(projects) - 1:
         print("Invalid choice")
         choice = get_valid_number("Project choice: ")
     project = projects[choice]
     start_date_string = project.start_date.strftime('%d/%m/%Y')
-    print(f"{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+    print(project)
     project.completion_percentage = get_valid_number("New Percentage: ")
     project.priority = get_valid_number("New Priority: ")
 
