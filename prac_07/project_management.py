@@ -27,9 +27,11 @@ def main():
     choice = input(">>>").upper()
     while choice != "Q":
         if choice == "L":
-            pass
+            filename = input("Filename: ")
+            projects.extend(load_projects(filename))
         elif choice == "S":
-            pass
+            filename = input("Filename: ")
+            save_projects(projects, filename)
         elif choice == "D":
             pass
         elif choice == "F":
@@ -61,6 +63,15 @@ def load_projects(filename):
             projects.append(Project(name, start_date, priority, cost_estimate, percentage))
     print(f"Loaded {len(projects)} projects from {filename}")
     return projects
+
+def save_projects(projects, filename):
+    with open(filename, "w") as out_file:
+        for project in projects:
+            # print(project)
+            start_date_string = project.start_date.strftime('%d/%m/%Y')
+            print(f"{project.name}\t{start_date_string}\t{project.priority}"
+                  f"\t{project.cost_estimate}\t{project.completion_percentage}", file=out_file)
+
 
 
 main()
