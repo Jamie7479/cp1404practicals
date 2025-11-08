@@ -37,7 +37,9 @@ def main():
         elif choice == "D":
             display_projects(sorted(projects))
         elif choice == "F":
-            pass
+            date = get_valid_date()
+            print(date)
+            display_projects_after_date(projects)
         elif choice == "A":
             pass
         elif choice == "U":
@@ -89,5 +91,19 @@ def display_projects(projects):
     for project in completed_projects:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
         print(f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+
+
+def get_valid_date():
+    while True:
+        try:
+            date_string = input("Show projects that start after date (d/m/yyyy): ")
+            date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+            return date
+        except ValueError:
+            print("Invalid date format")
+
+
+def display_projects_after_date(projects):
+    pass
 
 main()
