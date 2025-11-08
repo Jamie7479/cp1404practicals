@@ -21,11 +21,11 @@ from project import Project
 def main():
     print("Welcome to Project Manager")
     projects = load_projects(DEFAULT_FILENAME)
-    for project in projects:  # testing output
-        print(project)
+    # for project in projects:  # testing output
+    #     print(project)
 
     print(MENU)
-    choice = input(">>>").upper()
+    choice = input(">>> ").upper()
     while choice != "Q":
         if choice == "L":
             filename = input("Filename: ")
@@ -34,7 +34,7 @@ def main():
             filename = input("Filename: ")
             save_projects(projects, filename)
         elif choice == "D":
-            display_projects(sorted(projects))
+            display_projects(projects)
         elif choice == "F":
             date = get_valid_date("Show projects that start after date (d/m/yyyy): ")
             # print(date)
@@ -42,11 +42,11 @@ def main():
         elif choice == "A":
             projects.append(get_new_project())
         elif choice == "U":
-            pass
+            update_project(projects)
         else:
             print("Invalid input")
         print(MENU)
-        choice = input(">>>").upper()
+        choice = input(">>> ").upper()
 
 
 def load_projects(filename):
@@ -79,9 +79,9 @@ def save_projects(projects, filename):
 
 
 def display_projects(projects):
-    incomplete_projects = [project for project in projects if not project.is_complete()]
-    completed_projects = [project for project in projects if project.is_complete()]
+    incomplete_projects = [project for project in sorted(projects) if not project.is_complete()]
     print("Incomplete projects:")
+    completed_projects = [project for project in sorted(projects) if project.is_complete()]
     for project in incomplete_projects:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
         print(
@@ -105,7 +105,7 @@ def get_valid_date(prompt):
 
 
 def display_projects_after_date(projects, date):
-    for project in [project for project in projects if project.is_after(date)]:
+    for project in [project for project in sorted(projects) if project.is_on_or_after(date)]:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
         print(
             f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
@@ -131,6 +131,19 @@ def get_new_project():
     return Project(name,start_date,priority,cost_estimate,completion_percentage)
 
 
+def update_project(projects):
+    for i, project in enumerate(projects):
+        start_date_string = project.start_date.strftime('%d/%m/%Y')
+        print(f"{i} {project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+    choice = get_valid_number("Project choice: ")
+    while choice > len(projects)-1:
+        print("Invalid choice")
+        choice = get_valid_number("Project choice: ")
+    project = projects[choice]
+    start_date_string = project.start_date.strftime('%d/%m/%Y')
+    print(f"{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+    project.completion_percentage = get_valid_number("New Percentage: ")
+    project.priority = get_valid_number("New Priority: ")
 
 
 main()
