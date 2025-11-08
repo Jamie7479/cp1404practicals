@@ -12,8 +12,7 @@ MENU = """- (L)oad projects
 - (F)ilter projects by date
 - (A)dd new project
 - (U)pdate project
-- (Q)uit
-"""
+- (Q)uit"""
 
 import datetime
 from project import Project
@@ -37,11 +36,11 @@ def main():
         elif choice == "D":
             display_projects(sorted(projects))
         elif choice == "F":
-            date = get_valid_date()
+            date = get_valid_date("Show projects that start after date (d/m/yyyy): ")
             # print(date)
             display_projects_after_date(projects, date)
         elif choice == "A":
-            pass
+            projects.append(get_new_project())
         elif choice == "U":
             pass
         else:
@@ -85,18 +84,20 @@ def display_projects(projects):
     print("Incomplete projects:")
     for project in incomplete_projects:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(
+            f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
 
     print("Completed projects:")
     for project in completed_projects:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(
+            f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
 
 
-def get_valid_date():
+def get_valid_date(prompt):
     while True:
         try:
-            date_string = input("Show projects that start after date (d/m/yyyy): ")
+            date_string = input(prompt)
             date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
             return date
         except ValueError:
@@ -106,7 +107,30 @@ def get_valid_date():
 def display_projects_after_date(projects, date):
     for project in [project for project in projects if project.is_after(date)]:
         start_date_string = project.start_date.strftime('%d/%m/%Y')
-        print(f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+        print(
+            f"\t{project.name}, start: {start_date_string}, priority {project.priority}, estimate: ${project.cost_estimate:.2f}, completion: {project.completion_percentage}%")
+
+
+def get_valid_number(prompt):
+    while True:
+        try:
+            number = int(input(prompt))
+            if number >= 0:
+                return number
+        except ValueError:
+            print("Invalid number")
+
+
+def get_new_project():
+    print("Let's add a new project")
+    name = input("Name: ")
+    start_date = get_valid_date("Start date (dd/mm/yyyy): ")
+    priority = get_valid_number("Priority: ")
+    cost_estimate = get_valid_number("Cost estimate: $")
+    completion_percentage = get_valid_number("Percent complete: ")
+    return Project(name,start_date,priority,cost_estimate,completion_percentage)
+
+
 
 
 main()
