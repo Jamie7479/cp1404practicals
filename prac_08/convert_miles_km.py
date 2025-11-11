@@ -6,6 +6,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 
+CONVERSION_FACTOR = 1.60934
+
 
 class ConvertMilesKm(App):
     output_string = StringProperty()
@@ -19,11 +21,18 @@ class ConvertMilesKm(App):
 
     def handle_convert(self):
         """Convert miles to km and change output based on text input"""
-        self.output_string = str(float(self.root.ids.user_input.text) * 1.60934)
+        try:
+            self.output_string = str(float(self.root.ids.user_input.text) * CONVERSION_FACTOR)
+        except ValueError:
+            self.output_string = '0.0'
 
     def handle_increment(self, increment):
         """Increment text input"""
-        self.root.ids.user_input.text = str(float(self.root.ids.user_input.text) + increment)
+        try:
+            self.root.ids.user_input.text = str(int(self.root.ids.user_input.text) + increment)
+        except ValueError:
+            self.root.ids.user_input.text = '0'
+        self.handle_convert()
 
 
 ConvertMilesKm().run()
